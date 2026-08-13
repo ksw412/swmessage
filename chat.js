@@ -1493,7 +1493,6 @@ function showChat(){
 }
 
 function showMain(){
-  // 固定在聊天室，不允許跳回 main。
   setPage("chat");
 }
 
