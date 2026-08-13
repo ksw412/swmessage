@@ -1,26 +1,4 @@
 const PROFILE_IMAGES = {
-  me: [
-    {
-      start:"0000-01-01",
-      end:"9999-12-31",
-      url:""
-    }
-  ],
-
-  sunwoo_test: [
-    {
-      start:"0000-01-01",
-      end:"9999-12-31",
-      url:"https://res.cloudinary.com/dhre1enum/image/upload/v1786346137/profile_dtf4gw.jpg"
-    }
-    // 範例：
-    // ,{
-    //   start:"2022-01-01",
-    //   end:"2022-12-31",
-    //   url:"https://res.cloudinary.com/.../新的頭貼.jpg"
-    // }
-  ],
-
   sunwoo_universe: [
     {
       start:"2021-01-31",
@@ -44,13 +22,6 @@ const PROFILE_IMAGES = {
     },
   ],
 
-  sunwoo_bubble: [
-    {
-      start:"0000-01-01",
-      end:"9999-12-31",
-      url:""
-    }
-  ]
 };
 
 function normalizeProfileDate(value){
@@ -98,26 +69,12 @@ function getProfileImage(key, date = "", fallback = "./icons/profile.jpg"){
 
 const FROMM_FRIENDS = [
   {
-    id:"sunwoo_test",
-    name:"선우",
-    subtitle:"😚",
-    likes:"+412",
-    messages:["./messages/text.json"]
-  },
-  {
     id:"sunwoo_universe",
     name:"선우",
     subtitle:"😚",
     likes:"+412",
     messages:["./messages/text.json","./messages/sw_universe.json"]
   },
-  {
-    id:"sunwoo_bubble",
-    name:"선우",
-    subtitle:"😚",
-    likes:"+412",
-    messages:["./messages/sw_bubble.json"]
-  }
 ];
 
 function getCurrentFriend(){
