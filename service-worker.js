@@ -4,7 +4,8 @@ const FILES_TO_CACHE = [
   "./",
   "./index.html",
   "./style.css",
-  "./script.js",
+  "./chat.js",
+  ".main.js",
   "./fake-scrollbar.js",
   "./manifest.json",
 
