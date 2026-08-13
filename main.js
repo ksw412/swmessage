@@ -1,10 +1,3 @@
-// main.js
-// 主頁、好友清單、頭貼設定
-// 請把下面空字串換成 Cloudinary 回傳的完整 https://res.cloudinary.com/... URL。
-
-// 頭貼改成「依日期區間」設定。
-// 新增頭貼時，只要再加一筆 { start, end, url }。
-// 聊天訊息會依 JSON 的日期自動選對應頭貼；主頁好友清單則顯示最新一筆頭貼。
 const PROFILE_IMAGES = {
   me: [
     {
