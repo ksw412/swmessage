@@ -73,7 +73,7 @@ const FROMM_FRIENDS = [
     name:"선우",
     subtitle:"😚",
     likes:"+412",
-    messages:["./messages/text.json","./messages/sw_universe.json"]
+    messages:["./messages/sw_universe.json"]
   },
 ];
 
