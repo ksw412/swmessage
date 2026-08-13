@@ -17,7 +17,7 @@ function renderChatLayout(){
   app.innerHTML = `
     <div class="header chat-header">
       <div class="header-bar" id="headerNormal">
-        <button class="nav-btn back-btn" type="button" aria-label="返回" onclick="showMain()">
+        <button class="nav-btn back-btn" type="button" aria-label="返回聊天室" onclick="showChat()">
           <span class="back-icon">‹</span>
         </button>
         <div class="name" id="artistName">&nbsp;선우</div>
@@ -48,7 +48,7 @@ function renderChatLayout(){
 
     <div class="input-area">
       <input id="userInput" placeholder="傳送訊息" onkeydown="if(event.key==='Enter')sendUser()">
-      <button onclick="sendUser()" style="font-size: 16px; font-weight: bold;">🥔</button>
+      <button onclick="sendUser()">送出</button>
     </div>
   `;
   root.appendChild(app);
@@ -79,6 +79,7 @@ renderChatLayout();
 
 const chat = document.getElementById("chat");
 const DEFAULT_ARTIST_NAME = "선우";
+const FIXED_FRIEND_ID = "sunwoo_universe";
 const DEFAULT_NICKNAME = "더비";
 let artistName = localStorage.getItem("frommChatName") || DEFAULT_ARTIST_NAME;
 let NICKNAME = localStorage.getItem("frommNickname") || DEFAULT_NICKNAME;
@@ -252,7 +253,8 @@ function applyCurrentFriendMeta(){
 }
 
 async function selectFriend(friendId){
-  const friend = setCurrentFriendId(friendId);
+  // 此版本固定使用 sunwoo_universe，忽略外部傳入的 friendId。
+  const friend = setCurrentFriendId(FIXED_FRIEND_ID);
   applyCurrentFriendMeta();
 
   try{
@@ -1282,7 +1284,6 @@ function renderMediaPage(tab = currentMediaTab){
 }
 
 const PAGE_LIST = [
-  "main",
   "chat",
   "settings",
   "media",
@@ -1297,7 +1298,7 @@ const PAGE_LIST = [
 
 // 每一頁按「返回」後要去哪裡，之後統一改這裡。
 const BACK_TARGETS = {
-  chat: "main",
+  chat: "chat",
   settings: "chat",
   media: "settings",
   "theme-settings": "settings",
@@ -1309,7 +1310,7 @@ const BACK_TARGETS = {
   "edit-theme-image": "theme-custom"
 };
 
-let currentPage = "main";
+let currentPage = "chat";
 
 function isMediaViewerOpen(){
   const viewer = document.getElementById("mediaViewer");
@@ -1317,12 +1318,15 @@ function isMediaViewerOpen(){
 }
 
 function normalizePage(page){
-  const value = String(page || "main").replace("#", "").trim();
-  return PAGE_LIST.includes(value) ? value : "main";
+  const value = String(page || "chat").replace("#", "").trim();
+
+  // 此版本禁止進入 main；任何 main / 未知頁面都回聊天室。
+  if(value === "main") return "chat";
+  return PAGE_LIST.includes(value) ? value : "chat";
 }
 
 function getCurrentPage(){
-  return currentPage || normalizePage(location.hash.replace("#", "") || "main");
+  return currentPage || normalizePage(location.hash.replace("#", "") || "chat");
 }
 
 function writeHistoryPage(page, replace = false, extraState = {}){
@@ -1426,12 +1430,6 @@ function showPage(page){
   if(themePresetPage) themePresetPage.style.display = "none";
 
 
-  if(nextPage === "main"){
-    renderMainFriendList();
-    if(mainPage) mainPage.style.display = "flex";
-    return;
-  }
-
   if(nextPage === "settings"){
     renderSettingsItems();
     if(settingsPage) settingsPage.style.display = "flex";
@@ -1495,7 +1493,8 @@ function showChat(){
 }
 
 function showMain(){
-  setPage("main");
+  // 固定在聊天室，不允許跳回 main。
+  setPage("chat");
 }
 
 function setupMainCalendarButton(){
@@ -1528,7 +1527,7 @@ function setupMainCalendarButton(){
   calendarBtn.type = "button";
   calendarBtn.setAttribute("aria-label", "開啟日曆");
   calendarBtn.onclick = openCalendarPage;
-  calendarBtn.innerHTML = `<img src="./icons/calendar.png" alt="日曆">`;
+  calendarBtn.innerHTML = `<img src="./icons/calendar1.png" alt="日曆">`;
 
   leftGroup.appendChild(calendarBtn);
 }
@@ -2873,7 +2872,7 @@ document.addEventListener("keydown", e => {
 });
 
 const MESSAGE_FILES = [
-  "./messages/sw_universe.json"
+
 ];
 
 async function loadAllMessageFiles(files = MESSAGE_FILES){
@@ -2900,17 +2899,12 @@ async function loadAllMessageFiles(files = MESSAGE_FILES){
   return merged;
 }
 
-loadAllMessageFiles()
+setCurrentFriendId(FIXED_FRIEND_ID);
+
+loadAllMessageFiles(getCurrentFriend().messages)
   .then(async messages => {
     allMessages = messages;
-
-    // 暫時不從 main.js 取得訊息檔與聊天室名稱；預設固定為 선우。
-    artistName = DEFAULT_ARTIST_NAME;
-    localStorage.setItem("frommChatName", artistName);
-    const artistEl = document.getElementById("artistName");
-    if(artistEl) artistEl.textContent = artistName;
-
-    renderMainFriendList();
+    applyCurrentFriendMeta();
     try {
       chatBgImage = await loadBgImage();
     } catch (err) {
@@ -2922,7 +2916,8 @@ loadAllMessageFiles()
     updateSettingsLabels();
     renderMessages(allMessages);
 
-    const initialPage = normalizePage(location.hash.replace("#", "") || "main");
+    // 啟動後固定進聊天室；即使網址帶 #main 也會被導回 #chat。
+    const initialPage = "chat";
     initHistoryPage(initialPage);
     showPage(initialPage);
     setupMainCalendarButton();

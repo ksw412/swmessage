@@ -6,13 +6,9 @@ const FILES_TO_CACHE = [
   "./style.css",
   "./script.js",
   "./fake-scrollbar.js",
-  "./messages.json",
   "./manifest.json",
 
-  "./font/Gaegu-Regular.ttf",
-  "./font/girl.ttf",
-
-  "./icons/icon-192.png",
+  "./icons/icon-512.png",
 
 ];
 
