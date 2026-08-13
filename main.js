@@ -116,7 +116,7 @@ const FROMM_FRIENDS = [
     name:"선우",
     subtitle:"😚",
     likes:"+412",
-    messages:["./messages/sw_universe.json"]
+    messages:["./messages/text.json","./messages/sw_universe.json"]
   },
   {
     id:"sunwoo_bubble",
@@ -421,5 +421,6 @@ function injectMainPageStyle(){
 
 
 injectMainPageStyle();
-renderMainLayout();
-renderMainFriendList();
+// chat-only 模式：不建立 main 頁面
+// renderMainLayout();
+// renderMainFriendList();
