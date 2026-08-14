@@ -3,7 +3,7 @@ const PROFILE_IMAGES = {
     {
       start:"2021-01-31",
       end:"2021-02-02",
-      url:"https://res.cloudinary.com/dhre1enum/image/upload/v1786684310/1a0827fd2f376f2dc82e1c1388e7a-01_r1cdmz.jpg"
+      url:"https://res.cloudinary.com/dhre1enum/image/upload/v1786684691/1a0827fd2f376f2dc82e1c1388e7a-01_lx6gka.jpg"
     },
     {
       start:"2021-02-03",
